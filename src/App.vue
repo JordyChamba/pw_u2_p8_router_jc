@@ -2,7 +2,7 @@
   <NavBar></NavBar>
   <router-view/>
 </template>
-
+ 
 <script>
 import NavBar from '@/components/NavBar.vue';
 export default {
@@ -12,6 +12,7 @@ export default {
   },
 };
 </script>
+ 
 
 <style>
 #app {

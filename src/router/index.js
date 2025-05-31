@@ -1,16 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
 import EstudianteView from "@/views/EstudianteView.vue";
 import BecarioView from "@/views/BecarioView";
 import EstudianteTablaViewV from "@/views/EstudianteTablaViewV";
 
 const routes = [
   //configuracion de la primera pagina
-  {
-    path: '/',
-    name: 'home',
-    component: HomeView
-  },
   //arreglo de rutas: Estudiante View
   //cargar incial
   {
@@ -33,14 +27,6 @@ const routes = [
     //configuracion de la segunda pagina
     // lazy-loaded: Solo se va a cagar cuando se necesite
     //cargar bajo demanda
-  {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  },
     //arreglo de rutas: Estudiante View
   {
     path: '/contador',

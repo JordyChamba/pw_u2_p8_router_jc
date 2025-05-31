@@ -1,96 +1,172 @@
 <template>
   <div class="container">
     <label for="id_nombre">Nombre: </label>
+    <!-- v-model: Vincular una entrada a una propiedad reactiva  -->
+    <!-- Usa el patrón  de diseño modelo vista controlador -->
+    <!--
+     Vista: Parte visual,
+     Modelo: (Propiedad reactiva) Lo que viaja entre la vista y controlador,
+     Controlador: El JS se encarga de modificar los valores
+     -->
     <input v-model="nuevoNombre" id="id_nombre" type="text" />
-
+    <span v-if="mensaje.nombre">{{ mensaje.nombre }}</span>
+ 
     <label for="id_apellido">Apellido: </label>
     <input v-model="nuevoApellido" id="id_apellido" type="text" />
-
+    <span v-if="mensaje.apellido">{{ mensaje.nombre }}</span>
+ 
     <label for="id_edad">Edad: </label>
     <input v-model="nuevaEdad" id="id_edad" type="number" />
-
-    <label for="id_carrera">Carrera: </label>
-    <input v-model="nuevaCarrera" id="id_carrera" type="text" />
-
-    <label for="id_ciudad">Ciudad: </label>
-    <input v-model="nuevaCiudad" id="id_ciudad" type="text" />
-
-    <button @click="agregarEstudiante">Agregar</button>
-    <div class="cedula">
-      <button @click="obtenerPathVariable">Cedula</button>
-    </div>
-
+ 
+    <label for="id_matriculado">Matriculado: </label>
+    <input v-model="estaMatriculado" id="id_matriculado" type="checkbox" />
+ 
+    <label for="id_promedio">Promedio Académico: </label>
+    <input v-model="nuevoPromedioAcademico" id="id_promedio" type="number" />
+ 
+    <button v-on:click="agregarEstudiante()">Agregar</button>
+ 
     <ul>
+      <!-- v-for Directiva para y graficar componentes a partir de un arreglo o una lista -->
+      <!-- <li v-for="estu in lista" :key="estu.nombre">
+        Nombre: {{ estu.nombre }} - Apellido: {{ estu.apellido }}
+      </li> -->
+ 
+      <!-- Con desestructuración de objetos -->
       <li
-        v-for="{ nombre, apellido, edad, carrera, ciudad } in lista"
-        :key="nombre + apellido"
+        v-for="{
+          nombre,
+          apellido,
+          edad,
+          matriculado,
+          promedioAcademico,
+        } in lista"
+        :key="nombre"
       >
         Nombre: {{ nombre }} - Apellido: {{ apellido }} - Edad: {{ edad }} -
-        Carrera: {{ carrera }} - Ciudad: {{ ciudad }}
+        Matriculado: {{ matriculado ? "Sí" : "No" }} - Promedio Académico:
+        {{ promedioAcademico }}
       </li>
     </ul>
+    <Button @click="obtenerPathVariable()">Path Variable</Button>
   </div>
 </template>
-
+ 
 <script>
 export default {
   data() {
     return {
-      nuevoNombre: "",
-      nuevoApellido: "",
-      nuevaEdad: null,
-      nuevaCarrera: "",
-      nuevaCiudad: "",
-      mostrar: false, // agregada para evitar error
+      nuevoNombre: null,
+      nuevoApellido: null,
+      nuevaEdad: 22,
+      estaMatriculado: false,
+      nuevoPromedioAcademico: 16.0,
       lista: [
         {
-          nombre: "Jordy",
-          apellido: "Chamba",
+          nombre: "Kevin",
+          apellido: "Andrade",
           edad: 22,
-          carrera: "Sistemas",
-          ciudad: "Quito",
+          matriculado: false,
+          promedioAcademico: 16.86,
         },
-        // resto de estudiantes...
+        {
+          nombre: "Daniel",
+          apellido: "Vera",
+          edad: 23,
+          matriculado: true,
+          promedioAcademico: 16.65,
+        },
+        {
+          nombre: "Pedro",
+          apellido: "Sanchez",
+          edad: 26,
+          matriculado: false,
+          promedioAcademico: 15.0,
+        },
+        {
+          nombre: "Jorge",
+          apellido: "Teran",
+          edad: 25,
+          matriculado: false,
+          promedioAcademico: 17.2,
+        },
+        {
+          nombre: "Carlos",
+          apellido: "Castillo",
+          edad: 23,
+          matriculado: true,
+          promedioAcademico: 15.12,
+        },
+        {
+          nombre: "Viviana",
+          apellido: "Lopez",
+          edad: 24,
+          matriculado: false,
+          promedioAcademico: 14.23,
+        },
       ],
+      mensaje: {
+        nombre: null,
+        apellido: null,
+      },
     };
   },
   methods: {
     agregarEstudiante() {
-      const nuevo = {
-        nombre: this.nuevoNombre,
-        apellido: this.nuevoApellido,
-        edad: this.nuevaEdad,
-        carrera: this.nuevaCarrera,
-        ciudad: this.nuevaCiudad,
-      };
-      this.lista.push(nuevo);
-
-      // limpiar campos
-      this.nuevoNombre = "";
-      this.nuevoApellido = "";
-      this.nuevaEdad = null;
-      this.nuevaCarrera = "";
-      this.nuevaCiudad = "";
-
-      // puedes usar mostrar si lo necesitas en el template
-      this.mostrar = true;
-      setTimeout(() => {
-        this.mostrar = false;
-      }, 3000);
+      if (this.validarEntradas()) {
+        const nuevoEst = {
+          nombre: this.nuevoNombre,
+          apellido: this.nuevoApellido,
+          edad: this.nuevaEdad,
+          matriculado: this.estaMatriculado,
+          promedioAcademico: this.nuevoPromedioAcademico,
+        };
+        //   this.lista.unshift(nuevoEst);
+        this.lista.push(nuevoEst);
+      }
     },
-
     obtenerPathVariable() {
-      const cedula = this.$route.params.cedula;
-      console.log(cedula);
 
+      //Ciclo de vida del componente
+
+      const cedula = this.$route.params.cedula;
+      console.log("CEDULA: ", cedula);
+ 
       const anio = this.$route.query.anio;
-      console.log(anio);
+      console.log("Año: ", anio);
       const mes = this.$route.query.mes;
-      console.log(mes);
+      console.log("Mes: ", mes);
     },
   },
-  mounted() {
-    this.obtenerPathVariable(); // ejecutar automáticamente si se requiere
+  beforeCreate(){
+    console.log('before Create');
+  },
+  created(){
+    console.log('Cuando se crea el componente');
+  },
+  beforeMount(){
+     console.log('beforeMount');
+  },
+  mounted(){
+     const cedula = this.$route.params.cedula;
+      console.log("CEDULA: ", cedula);
+ 
+      const anio = this.$route.query.anio;
+      console.log("Año: ", anio);
+      const mes = this.$route.query.mes;
+      console.log("Mes: ", mes);
+  },
+  beforeUpdate(){
+     console.log('beforeUpdate');
+  },
+  updated(){
+      console.log('updated');
+  },
+  beforeUnmount(){
+    console.log('beforeUnmount');
+  },
+  unmounted(){
+    console.log('unmounted');
   },
 };
 </script>
