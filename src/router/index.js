@@ -14,7 +14,7 @@ const routes = [
   //arreglo de rutas: Estudiante View
   //cargar incial
   {
-    path: '/estudiante', // los ":" determina el PathVariable
+    path: '/estudiante/:cedula', // los ":" determina el PathVariable
     name: 'estudianteView',
     component: EstudianteView
   },

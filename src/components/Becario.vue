@@ -1,14 +1,22 @@
 <template>
   <div class="container">
-    <div v-show="mostrar"><h1>Datos Guardados</h1></div>
+    <div v-show="mostrar"><h1>{{ mensajeFinal }}</h1></div>
+    <div v-show="error" style="color: red">
+      <h2>{{ mensaje.error }}</h2>
+      <span v-if="mensaje.final">{{ mensaje.error }}</span>
+    </div>
 
     <label for="id_nombre">Nombre: </label>
     <input v-model="nuevoNombre" id="id_nombre" type="text" />
+    <span v-if="mensaje.nombre">{{ mensaje.nombre }}</span>
+    <!-- Nuevo codigo-->
 
     <label for="id_apellido">Apellido: </label>
     <input v-model="nuevoApellido" id="id_apellido" type="text" />
+    <span v-if="mensaje.apellido">{{ mensaje.apellido }}</span>
+    <!-- Nuevo codigo-->
 
-    <label for="id_cedula">Cedula: </label>
+    <label for="id_cedula">Cédula: </label>
     <input v-model="nuevaCedula" id="id_cedula" type="text" />
 
     <label for="id_provincia">Provincia: </label>
@@ -17,21 +25,23 @@
     <label for="id_instituto">Instituto: </label>
     <input v-model="nuevoInstituto" id="id_instituto" type="text" />
 
-    <button v-on:click="agregarBecario()">Agregar Becario</button>
+    <button @click="agregarBecario()">Agregar Becario</button>
 
     <table>
       <thead>
-        <th>Nombre</th>
-        <th>Apellido</th>
-        <th>Cedula</th>
-        <th>Provincia</th>
-        <th>Instituto</th>
-        <th>Accion</th>
+        <tr>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Cédula</th>
+          <th>Provincia</th>
+          <th>Instituto</th>
+          <th>Acción</th>
+        </tr>
       </thead>
       <tbody>
         <tr
           v-for="{ nombre, apellido, cedula, provincia, instituto } in lista"
-          :Key="nombre"
+          :key="cedula"
         >
           <td>{{ nombre }}</td>
           <td>{{ apellido }}</td>
@@ -48,13 +58,28 @@
 <script>
 export default {
   data() {
+
+    //valiacion de formulario
+    //presentacion de mensajes
+    //manejo de errores
+
     return {
       mostrar: false,
+      nombreMensaje: false, //codigo nuevo
+      apellidoMensaje: false, //codigo nuevo
+      mensaje: {
+        nombre: null,
+        apellido: null,
+        final:null,
+      },
+
+      error: false,
+      mensajeError: "",
       nuevoNombre: "",
       nuevoApellido: "",
       nuevaCedula: "",
       nuevaProvincia: "",
-      nuevoInstituto: "", 
+      nuevoInstituto: "",
       lista: [
         {
           nombre: "Jordy",
@@ -75,18 +100,44 @@ export default {
   },
   methods: {
     agregarBecario() {
+      if (!this.validarEntradas()) {
+        return;
+      }
+
+      // Validaciones
+      if (
+        !this.nuevoNombre ||
+        !this.nuevoApellido ||
+        !this.nuevaCedula ||
+        !this.nuevaProvincia ||
+        !this.nuevoInstituto
+      ) {
+        this.mensajeError = "Todos los campos son obligatorios.";
+        this.error = true;
+        return;
+      }
+
+      const cedulaValida = /^[0-9]{10}$/.test(this.nuevaCedula);
+      if (!cedulaValida) {
+        this.mensajeError = "La cédula debe tener 10 dígitos numéricos.";
+        this.error = true;
+        return;
+      }
+
+      // Si pasa validaciones
       const beca = {
         nombre: this.nuevoNombre,
         apellido: this.nuevoApellido,
         cedula: this.nuevaCedula,
         provincia: this.nuevaProvincia,
-        instituto: this.nuevoInstituto, 
+        instituto: this.nuevoInstituto,
       };
 
       this.lista.push(beca);
       this.mostrar = true;
+      this.error = false;
 
-      // Limpiar los campos
+      // Limpiar campos
       this.nuevoNombre = "";
       this.nuevoApellido = "";
       this.nuevaCedula = "";
@@ -96,6 +147,38 @@ export default {
       setTimeout(() => {
         this.mostrar = false;
       }, 1500);
+      this.mensajeFinal="UsuarioGuardado";
+      this.limpiarPagina();
+    },
+    validarEntradas() {
+      try {
+        let validar = this.mensaje.apellido.primero;
+        let numero = 2;
+
+        if (this.nuevoNombre === null) {
+          this.mensaje.nombre = "Nombre es obligatorio";
+          numero--;
+        }
+
+        if (this.nuevoApellido === null) {
+          this.mensaje.apellido = "Apellido es obligatorio";
+          numero--;
+        }
+        if (numero === 2) {
+          return true;
+        } else {
+          return false;
+        }
+      } catch (error) {
+        console.error("Error! Ha ocurrido un problema");
+        console.error(error);
+        this.mensajeFinal="Ha ocurrido un error en el sistema";
+      }
+    },
+    limpiarPagina() {
+      this.nombre = null;
+      this.mensaje.nombre = null;
+      this.mensaje.apellido = null;
     },
   },
 };

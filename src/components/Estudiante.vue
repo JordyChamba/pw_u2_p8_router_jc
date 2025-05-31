@@ -15,11 +15,10 @@
     <label for="id_ciudad">Ciudad: </label>
     <input v-model="nuevaCiudad" id="id_ciudad" type="text" />
 
-    <button v-on:click="agregarEstudiante">Agregar</button>
+    <button @click="agregarEstudiante">Agregar</button>
     <div class="cedula">
-      <button v-on:click="obtenerPathVariable">Cedula</button>
+      <button @click="obtenerPathVariable">Cedula</button>
     </div>
-    
 
     <ul>
       <li
@@ -33,14 +32,6 @@
   </div>
 </template>
 
-<!--- 
- - v-for: iteracion 
- - comunicar datos de entrada con una propiedad ractiva
- - MVC(patron de diseño) Vista: parte visual, 
-   Modelo: vista controlador, Controlador: controla todo lo que pasa en la vista
-
- -->
-
 <script>
 export default {
   data() {
@@ -50,6 +41,7 @@ export default {
       nuevaEdad: null,
       nuevaCarrera: "",
       nuevaCiudad: "",
+      mostrar: false, // agregada para evitar error
       lista: [
         {
           nombre: "Jordy",
@@ -58,48 +50,7 @@ export default {
           carrera: "Sistemas",
           ciudad: "Quito",
         },
-        {
-          nombre: "Kevin",
-          apellido: "Teran",
-          edad: 23,
-          carrera: "Electrónica",
-          ciudad: "Guayaquil",
-        },
-        {
-          nombre: "Jose",
-          apellido: "Castillo",
-          edad: 21,
-          carrera: "Contabilidad",
-          ciudad: "Cuenca",
-        },
-        {
-          nombre: "Ana",
-          apellido: "Pozo",
-          edad: 20,
-          carrera: "Derecho",
-          ciudad: "Loja",
-        },
-        {
-          nombre: "Erik",
-          apellido: "Parra",
-          edad: 22,
-          carrera: "Medicina",
-          ciudad: "Ambato",
-        },
-        {
-          nombre: "Pedro",
-          apellido: "Loya",
-          edad: 24,
-          carrera: "Mecánica",
-          ciudad: "Riobamba",
-        },
-        {
-          nombre: "Juan",
-          apellido: "Andrade",
-          edad: 25,
-          carrera: "Arquitectura",
-          ciudad: "Ibarra",
-        },
+        // resto de estudiantes...
       ],
     };
   },
@@ -113,26 +64,37 @@ export default {
         ciudad: this.nuevaCiudad,
       };
       this.lista.push(nuevo);
-      this.mostrar = true;
-      this.nombre = null; /*Crear un metodo*/
 
+      // limpiar campos
+      this.nuevoNombre = "";
+      this.nuevoApellido = "";
+      this.nuevaEdad = null;
+      this.nuevaCarrera = "";
+      this.nuevaCiudad = "";
+
+      // puedes usar mostrar si lo necesitas en el template
+      this.mostrar = true;
       setTimeout(() => {
         this.mostrar = false;
       }, 3000);
     },
 
-    obtenerPathVariable(){
+    obtenerPathVariable() {
       const cedula = this.$route.params.cedula;
       console.log(cedula);
 
-      const anio= this.$route.query.anio;
-       console.log(anio);
-      const mes= this.$route.query.mes;
-       console.log(mes);
+      const anio = this.$route.query.anio;
+      console.log(anio);
+      const mes = this.$route.query.mes;
+      console.log(mes);
     },
+  },
+  mounted() {
+    this.obtenerPathVariable(); // ejecutar automáticamente si se requiere
   },
 };
 </script>
+
 
 <style scoped>
 .container {
