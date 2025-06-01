@@ -10,28 +10,28 @@
      -->
     <input v-model="nuevoNombre" id="id_nombre" type="text" />
     <span v-if="mensaje.nombre">{{ mensaje.nombre }}</span>
- 
+
     <label for="id_apellido">Apellido: </label>
     <input v-model="nuevoApellido" id="id_apellido" type="text" />
-    <span v-if="mensaje.apellido">{{ mensaje.nombre }}</span>
- 
+    <span v-if="mensaje.apellido">{{ mensaje.apellido }}</span>
+
     <label for="id_edad">Edad: </label>
     <input v-model="nuevaEdad" id="id_edad" type="number" />
- 
+
     <label for="id_matriculado">Matriculado: </label>
     <input v-model="estaMatriculado" id="id_matriculado" type="checkbox" />
- 
+
     <label for="id_promedio">Promedio Académico: </label>
     <input v-model="nuevoPromedioAcademico" id="id_promedio" type="number" />
- 
+
     <button v-on:click="agregarEstudiante()">Agregar</button>
- 
+
     <ul>
       <!-- v-for Directiva para y graficar componentes a partir de un arreglo o una lista -->
       <!-- <li v-for="estu in lista" :key="estu.nombre">
         Nombre: {{ estu.nombre }} - Apellido: {{ estu.apellido }}
       </li> -->
- 
+
       <!-- Con desestructuración de objetos -->
       <li
         v-for="{
@@ -51,7 +51,7 @@
     <Button @click="obtenerPathVariable()">Path Variable</Button>
   </div>
 </template>
- 
+
 <script>
 export default {
   data() {
@@ -126,51 +126,63 @@ export default {
       }
     },
     obtenerPathVariable() {
-
       //Ciclo de vida del componente
 
       const cedula = this.$route.params.cedula;
       console.log("CEDULA: ", cedula);
- 
+
       const anio = this.$route.query.anio;
       console.log("Año: ", anio);
       const mes = this.$route.query.mes;
       console.log("Mes: ", mes);
     },
+    validarEntradas() {
+      if (this.nuevoNombre === null) {
+        this.mensaje.nombre = "Nombre es obligatorio";
+        return false;
+      }
+
+      if (this.nuevoApellido === null) {
+        this.mensaje.apellido = "Apellido es obligatorio";
+        return false;
+      }
+
+      return true;
+    },
   },
-  beforeCreate(){
-    console.log('before Create');
+
+  beforeCreate() {
+    console.log("before Create");
   },
-  created(){
-    console.log('Cuando se crea el componente');
+  created() {
+    console.log("Cuando se crea el componente");
   },
-  beforeMount(){
-     console.log('beforeMount');
+  beforeMount() {
+    console.log("beforeMount");
   },
-  mounted(){
-     const cedula = this.$route.params.cedula;
-      console.log("CEDULA: ", cedula);
- 
-      const anio = this.$route.query.anio;
-      console.log("Año: ", anio);
-      const mes = this.$route.query.mes;
-      console.log("Mes: ", mes);
+  mounted() {
+    const cedula = this.$route.params.cedula;
+    console.log("CEDULA: ", cedula);
+
+    const anio = this.$route.query.anio;
+    console.log("Año: ", anio);
+    const mes = this.$route.query.mes;
+    console.log("Mes: ", mes);
   },
-  beforeUpdate(){
-     console.log('beforeUpdate');
+  beforeUpdate() {
+    console.log("beforeUpdate");
   },
-  updated(){
-      console.log('updated');
+  updated() {
+    console.log("updated");
   },
-  beforeUnmount(){
-    console.log('beforeUnmount');
+  beforeUnmount() {
+    console.log("beforeUnmount");
   },
-  unmounted(){
-    console.log('unmounted');
+  unmounted() {
+    console.log("unmounted");
   },
 };
 </script>
-
 
 <style scoped>
 .container {

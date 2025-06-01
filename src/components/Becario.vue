@@ -1,20 +1,20 @@
 <template>
   <div class="container">
-    <div v-show="mostrar"><h1>{{ mensajeFinal }}</h1></div>
-    <div v-show="error" style="color: red">
-      <h2>{{ mensaje.error }}</h2>
-      <span v-if="mensaje.final">{{ mensaje.error }}</span>
+    <!-- Mensaje de éxito -->
+    <div v-show="mostrar">
+      <h1>{{ mensajeFinal }}</h1>
     </div>
 
+    <!-- Formulario -->
     <label for="id_nombre">Nombre: </label>
     <input v-model="nuevoNombre" id="id_nombre" type="text" />
-    <span v-if="mensaje.nombre">{{ mensaje.nombre }}</span>
-    <!-- Nuevo codigo-->
+    <span v-if="mensaje.nombre" style="color: red">{{ mensaje.nombre }}</span>
 
     <label for="id_apellido">Apellido: </label>
     <input v-model="nuevoApellido" id="id_apellido" type="text" />
-    <span v-if="mensaje.apellido">{{ mensaje.apellido }}</span>
-    <!-- Nuevo codigo-->
+    <span v-if="mensaje.apellido" style="color: red">{{
+      mensaje.apellido
+    }}</span>
 
     <label for="id_cedula">Cédula: </label>
     <input v-model="nuevaCedula" id="id_cedula" type="text" />
@@ -27,6 +27,7 @@
 
     <button @click="agregarBecario()">Agregar Becario</button>
 
+    <!-- Tabla -->
     <table>
       <thead>
         <tr>
@@ -58,23 +59,13 @@
 <script>
 export default {
   data() {
-
-    //valiacion de formulario
-    //presentacion de mensajes
-    //manejo de errores
-
     return {
       mostrar: false,
-      nombreMensaje: false, //codigo nuevo
-      apellidoMensaje: false, //codigo nuevo
+      mensajeFinal: "",
       mensaje: {
         nombre: null,
         apellido: null,
-        final:null,
       },
-
-      error: false,
-      mensajeError: "",
       nuevoNombre: "",
       nuevoApellido: "",
       nuevaCedula: "",
@@ -104,27 +95,6 @@ export default {
         return;
       }
 
-      // Validaciones
-      if (
-        !this.nuevoNombre ||
-        !this.nuevoApellido ||
-        !this.nuevaCedula ||
-        !this.nuevaProvincia ||
-        !this.nuevoInstituto
-      ) {
-        this.mensajeError = "Todos los campos son obligatorios.";
-        this.error = true;
-        return;
-      }
-
-      const cedulaValida = /^[0-9]{10}$/.test(this.nuevaCedula);
-      if (!cedulaValida) {
-        this.mensajeError = "La cédula debe tener 10 dígitos numéricos.";
-        this.error = true;
-        return;
-      }
-
-      // Si pasa validaciones
       const beca = {
         nombre: this.nuevoNombre,
         apellido: this.nuevoApellido,
@@ -135,7 +105,6 @@ export default {
 
       this.lista.push(beca);
       this.mostrar = true;
-      this.error = false;
 
       // Limpiar campos
       this.nuevoNombre = "";
@@ -144,39 +113,33 @@ export default {
       this.nuevaProvincia = "";
       this.nuevoInstituto = "";
 
+      this.mensajeFinal = "Usuario guardado con éxito";
+
       setTimeout(() => {
         this.mostrar = false;
       }, 1500);
-      this.mensajeFinal="UsuarioGuardado";
-      this.limpiarPagina();
+
+      this.limpiarMensajes();
     },
     validarEntradas() {
-      try {
-        let validar = this.mensaje.apellido.primero;
-        let numero = 2;
+      this.mensaje.nombre = null;
+      this.mensaje.apellido = null;
 
-        if (this.nuevoNombre === null) {
-          this.mensaje.nombre = "Nombre es obligatorio";
-          numero--;
-        }
+      let valido = true;
 
-        if (this.nuevoApellido === null) {
-          this.mensaje.apellido = "Apellido es obligatorio";
-          numero--;
-        }
-        if (numero === 2) {
-          return true;
-        } else {
-          return false;
-        }
-      } catch (error) {
-        console.error("Error! Ha ocurrido un problema");
-        console.error(error);
-        this.mensajeFinal="Ha ocurrido un error en el sistema";
+      if (!this.nuevoNombre || !this.nuevoNombre.trim()) {
+        this.mensaje.nombre = "Nombre es obligatorio";
+        valido = false;
       }
+
+      if (!this.nuevoApellido || !this.nuevoApellido.trim()) {
+        this.mensaje.apellido = "Apellido es obligatorio";
+        valido = false;
+      }
+
+      return valido;
     },
-    limpiarPagina() {
-      this.nombre = null;
+    limpiarMensajes() {
       this.mensaje.nombre = null;
       this.mensaje.apellido = null;
     },
