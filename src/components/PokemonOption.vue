@@ -1,16 +1,30 @@
 <template>
   <div class="options-container">
     <ul>
-      <li>Pokemon 1</li>
-      <li>Pokemon 2</li>
-      <li>Pokemon 3</li>
-      <li>Pokemon 4</li>
+      <li v-for="pokemon in pokemons" :key="pokemon.id">{{pokemon.nombre }}</li>
     </ul>
   </div>
 </template>
 
 <script>
-export default {};
+import { obtenerOpcionesFachada } from '@/clients/PokemonAPI';
+export default {
+  props: {
+    pokemons: {
+      type:Array,
+      required: true,
+    },
+  },
+  methods: {
+    async iniciarJuego() {
+      const opciones= await obtenerOpcionesFachada(4);
+      console.log(opciones);
+    },
+  },
+  mounted() {
+    this.iniciarJuego();
+  },
+};
 </script>
 
 <style scoped>
