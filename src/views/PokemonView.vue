@@ -1,18 +1,33 @@
 <template>
-  <PokemonImage :pokemonID="69" :mostrarImage="true" />
-  <PokemonOption :pokemons="vectorPokemon" />
+  <h1>Selcciona el correcto</h1>
+  <h1>{{ mensaje }}</h1>
+  <PokemonImage
+    v-if="pokemon"
+    :pokemonID="pokemon.id"
+    :mostrarImage="mostrar"
+    ref="miHijo1"
+  />
+  <PokemonOption
+    @seleccionado="recibioPadre($event)"
+    :pokemons="vectorPokemon"
+    ref="miHijo2"
+  />
+  <button @click="comunicarHijo">Comunicar Hijo</button>
 </template>
 
 <script>
 import PokemonImage from "@/components/PokemonImage.vue";
 import PokemonOption from "@/components/PokemonOption.vue";
 import { obtenerOpcionesFachada } from "@/clients/PokemonAPI";
+import { obtenerAleatorioFachada } from "@/clients/PokemonAPI";
 export default {
   data() {
     return {
-    vectorPokemon: [],
-    }
-
+      vectorPokemon: [],
+      pokemon: null,
+      mostrar: false,
+      mensaje: null,
+    };
   },
   components: {
     PokemonImage,
@@ -20,9 +35,37 @@ export default {
   },
   methods: {
     async iniciarJuego() {
-      const opciones = await obtenerOpcionesFachada(4);
-      this.vectorPokemon=opciones;
+      const opciones = await obtenerOpcionesFachada(5);
+      this.vectorPokemon = opciones;
       console.log(this.vectorPokemon);
+
+      //elegir un pokemon de los 4
+      let pokemonCorrecto = obtenerAleatorioFachada(
+        0,
+        this.vectorPokemon.length
+      );
+      this.c = this.vectorPokemon[pokemonCorrecto];
+    },
+    recibioPadre(id) {
+      console.log("Mensaje recibido desde Hijo");
+      console.log(id);
+      this.mostrar = true;
+      console.log(this.mostrar);
+      this.validarRespuesta(id.atributo1);
+    },
+    validarRespuesta(opcionSeleccionado) {
+      if (opcionSeleccionado === this.objetoEnviado) {
+        this.mensaje = "Correcto";
+      } else {
+        // this.mensaje = "Pediste" + this.pokemon.nombre;
+      }
+    },
+    comunicarHijo() {
+      console.log(this.$refs.miHijo1.mensaje1);
+      this.$refs.miHijo1.mensaje1 = "Nuevo mensaje 1";
+
+      console.log(this.$refs.miHijo2.mensaje2);
+      this.$refs.miHijo2.mensaje2 = "Nuevo mensaje 2";
     },
   },
   mounted() {

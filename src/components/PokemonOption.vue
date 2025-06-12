@@ -1,24 +1,52 @@
 <template>
+  {{ mensaje2 }}
   <div class="options-container">
     <ul>
-      <li v-for="pokemon in pokemons" :key="pokemon.id">{{pokemon.nombre }}</li>
+      <li
+        @click="comunicarClick(pokemon.id)"
+        v-for="pokemon in pokemons"
+        :key="pokemon.id"
+      >
+        {{ pokemon.nombre }}
+      </li>
     </ul>
   </div>
 </template>
 
 <script>
-import { obtenerOpcionesFachada } from '@/clients/PokemonAPI';
+import { obtenerOpcionesFachada } from "@/clients/PokemonAPI";
 export default {
+  data() {
+    return {
+      mensaje2: "mensaje2",
+    };
+  },
+
   props: {
     pokemons: {
-      type:Array,
+      type: Array,
       required: true,
     },
   },
+
   methods: {
     async iniciarJuego() {
-      const opciones= await obtenerOpcionesFachada(4);
+      const opciones = await obtenerOpcionesFachada(4);
       console.log(opciones);
+    },
+    comunicarClick(id) {
+      console.log("click...");
+      //desde cualquier parte del codigo, no necesariamente de un metodo
+      //yo puso llamar a una funcion, conocida como emits
+      //
+      const objetoEnviado = {
+        atributo1: id,
+        atributo2: "Jordy",
+        atributo2: true,
+      };
+
+      console.log(id);
+      this.$emit("seleccionado", objetoEnviado);
     },
   },
   mounted() {
