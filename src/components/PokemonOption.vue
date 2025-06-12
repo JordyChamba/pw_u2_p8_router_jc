@@ -3,7 +3,7 @@
   <div class="options-container">
     <ul>
       <li
-        @click="comunicarClick(pokemon.id)"
+        @click="comunicarClick(pokemons.id)"
         v-for="pokemon in pokemons"
         :key="pokemon.id"
       >
@@ -14,7 +14,6 @@
 </template>
 
 <script>
-import { obtenerOpcionesFachada } from "@/clients/PokemonAPI";
 export default {
   data() {
     return {
@@ -30,27 +29,19 @@ export default {
   },
 
   methods: {
-    async iniciarJuego() {
-      const opciones = await obtenerOpcionesFachada(4);
-      console.log(opciones);
-    },
     comunicarClick(id) {
       console.log("click...");
+      console.log(id);
       //desde cualquier parte del codigo, no necesariamente de un metodo
       //yo puso llamar a una funcion, conocida como emits
       //
       const objetoEnviado = {
         atributo1: id,
         atributo2: "Jordy",
-        atributo2: true,
+        atributo3: true,
       };
-
-      console.log(id);
       this.$emit("seleccionado", objetoEnviado);
     },
-  },
-  mounted() {
-    this.iniciarJuego();
   },
 };
 </script>

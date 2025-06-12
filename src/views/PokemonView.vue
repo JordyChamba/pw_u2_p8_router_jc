@@ -12,14 +12,17 @@
     :pokemons="vectorPokemon"
     ref="miHijo2"
   />
-  <button @click="comunicarHijo">Comunicar Hijo</button>
+  <button @click="comunicarHijo()">Comunicar Hijo</button>
 </template>
 
 <script>
 import PokemonImage from "@/components/PokemonImage.vue";
 import PokemonOption from "@/components/PokemonOption.vue";
-import { obtenerOpcionesFachada } from "@/clients/PokemonAPI";
-import { obtenerAleatorioFachada } from "@/clients/PokemonAPI";
+import {
+  obtenerOpcionesFachada,
+  obtenerAleatorioFachada,
+} from "@/clients/PokemonAPI";
+
 export default {
   data() {
     return {
@@ -44,7 +47,8 @@ export default {
         0,
         this.vectorPokemon.length
       );
-      this.c = this.vectorPokemon[pokemonCorrecto];
+      this.pokemon = this.vectorPokemon[pokemonCorrecto];
+      console.log(this.pokemon.nombre);
     },
     recibioPadre(id) {
       console.log("Mensaje recibido desde Hijo");
@@ -54,10 +58,10 @@ export default {
       this.validarRespuesta(id.atributo1);
     },
     validarRespuesta(opcionSeleccionado) {
-      if (opcionSeleccionado === this.objetoEnviado) {
+      if (opcionSeleccionado === this.pokemon.id) {
         this.mensaje = "Correcto";
       } else {
-        // this.mensaje = "Pediste" + this.pokemon.nombre;
+        this.mensaje = "Pediste" + this.pokemon.nombre;
       }
     },
     comunicarHijo() {

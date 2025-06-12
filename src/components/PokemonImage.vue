@@ -1,8 +1,13 @@
 <template>
   {{ mensaje1 }}
   <div class="image-container">
-    <img class="ocultar" :src="ImagenFuente" alt="NO hay foto de pokemon" />
-    <img v-if="mostrar" :src="ImagenFuente" alt="NO hay foto de pokemon" />
+    <img
+      v-if="!mostrarImage"
+      class="ocultar"
+      :src="ImagenFuente"
+      alt="NO hay foto de pokemon"
+    />
+    <img v-if="mostrarImage" :src="ImagenFuente" alt="NO hay foto de pokemon" />
   </div>
 </template>
 
