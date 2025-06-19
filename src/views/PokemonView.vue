@@ -59,9 +59,9 @@ export default {
     },
     validarRespuesta(opcionSeleccionado) {
       if (opcionSeleccionado === this.pokemon.id) {
-        this.mensaje = "Correcto";
+        this.mensaje = "Correcto!";
       } else {
-        this.mensaje = "Pediste" + this.pokemon.nombre;
+        this.mensaje = "Pediste: " + this.pokemon.nombre;
       }
     },
     comunicarHijo() {
