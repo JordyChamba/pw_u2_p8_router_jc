@@ -6,6 +6,7 @@ import PokemonView from "@/views/PokemonView.vue";
 import ResponsivoView from "@/views/ResponsivoView.vue";
 import EstudianteRepoView from "@/views/EstudianteRepoView.vue";
 import EstudianteConsulView from "@/views/EstudianteConsulView.vue";
+import EstudianteConsulEspeView from "@/views/EstudianteConsulEspeView.vue";
 
 const routes = [
   //configuracion de la primera pagina
@@ -21,6 +22,12 @@ const routes = [
     path: "/estudianteConsul", // los ":" determina el PathVariable
     name: "estudianteConsulView",
     component: EstudianteConsulView,
+  },
+
+  {
+    path: "/estudianteConsulEspe", // los ":" determina el PathVariable
+    name: "estudianteConsulEspeView",
+    component: EstudianteConsulEspeView,
   },
 
   {

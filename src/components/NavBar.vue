@@ -18,6 +18,8 @@
       <router-link to="/estudianteRepo">EstudianteRepo</router-link> |
 
       <router-link to="/estudianteConsul">EstudianteConsul</router-link> |
+
+      <router-link to="/estudianteConsulEspe">EstudianteEspe</router-link> |
     </nav>
   </div>
 </template>
