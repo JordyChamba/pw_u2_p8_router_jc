@@ -4,6 +4,7 @@ import BecarioView from "@/views/BecarioView";
 import EstudianteTablaViewV from "@/views/EstudianteTablaViewV";
 import PokemonView from "@/views/PokemonView.vue";
 import ResponsivoView from "@/views/ResponsivoView.vue";
+import EstudianteRepoView from "@/views/EstudianteRepoView.vue";
 
 const routes = [
   //configuracion de la primera pagina
@@ -16,9 +17,21 @@ const routes = [
   },
 
   {
+    path: "/estudianteRepo", // los ":" determina el PathVariable
+    name: "estudianteRepoView",
+    component: EstudianteRepoView,
+  },
+
+  {
     path: "/becario",
     name: "becarioView",
     component: BecarioView,
+  },
+
+  {
+    path: "/responsivo",
+    name: "responsivoView",
+    component: ResponsivoView,
   },
 
   {
@@ -60,15 +73,6 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import("../views/PreguntaView.vue"),
-  },
-
-  {
-    path: "/responsivo",
-    name: "responsivoView",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import("../views/ResponsivoView.vue"),
   },
 
   //pathVariable: Acceder a la ruta de un componente y dependiendo de la variable ejecute

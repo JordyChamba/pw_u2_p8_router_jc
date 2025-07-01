@@ -1,11 +1,16 @@
 <template>
   <div>
-    <h1>--</h1>
+    <componenteResponsivo />
   </div>
 </template>
 
 <script>
-export default {};
+import componenteResponsivo from "@/components/componenteResponsivo.vue";
+export default {
+  components: {
+    componenteResponsivo,
+  },
+};
 </script>
 
 <style></style>
