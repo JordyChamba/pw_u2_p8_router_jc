@@ -16,6 +16,8 @@
       <router-link to="/responsivo">Responsivo</router-link> |
 
       <router-link to="/estudianteRepo">EstudianteRepo</router-link> |
+
+      <router-link to="/estudianteConsul">EstudianteConsul</router-link> |
     </nav>
   </div>
 </template>
